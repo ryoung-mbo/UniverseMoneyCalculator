@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+</head>
+<body>
+  <h1>Univ.money calculator</h1>
+  <ol>
+    <li>Enter the amount of your initial investment or current locked amount.</li>
+    <li>Enter how many compounds per day you'll do. (Max 6)</li>
+    <li>Enter how many days you'll compound.</li>
+    <li>Enter how many days you're willing to wait to take the reward.</li>
+    <li>Click submit</li>
+  </ol>
+  <form method="post">
+    {% csrf_token %}
+    <table>
+    <tr>
+      <tr>
+        <td><label for="starting_amt">Starting Amount: </label></td>
+        <td><input name="starting_amt" id="starting_amt" type="number" value="{{ starting_amt|default:"42000"}}"></td>
+      </tr>
+      <tr>
+        <td><label for="compounds_per_day">Compounds per day: </label></td>
+        <td><input name="compounds_per_day" id="compounds_per_day" type="number" min="0" max="6"
+               value="{{ compounds_per_day|default:6 }}"></td>
+      </tr>
+      <tr>
+        <td><label for="days_compounding">Days compounding: </label></td>
+        <td><input name="days_compounding" id="days_compounding" type="number"  min="0"
+           value="{{ days_compounding|default_if_none:"0" }}"></td>
+      </tr>
+      <tr>
+        <td><label for="days_passive">Passive days: </label></td>
+        <td><input name="days_passive" id="days_passive" type="number" value="{{ days_passive }}"></td>
+      </tr>
+      <tr>
+        <td><button type="submit">Submit</button></td>
+      </tr>
+  </table>
+  </form>
+  <h5>Tier reached: {{ current_epoch.name | capfirst }}, {{ current_epoch.bonus_mx_perc | floatformat:2 }}% bonus</h5>
+  <h5>Total Locked: {{ total_locked | default_if_none:"0.00"|floatformat:4}}</h5>
+  <h5>Daily Rewards: {{ daily_rewards | default_if_none:"0.00"|floatformat:4}}</h5>
+  <h3>Rewards after {{ days_passive|add:days_compounding }} days: {{ grand_total | default_if_none:"0.00"|floatformat:4}}</h3>
+  <i>Estimation purposes only. Compounds per day assume even distribution. Amounts not reflective of coin value.
+    Note that pending rewards goes to zero after every compound but the locked amount increases.
+  </i>
+  <br>
+  [<a href="{% url "calculator:schedule" %}">Schedule</a>]
+</body>
+</html>

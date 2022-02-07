@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 0.5em;
+    }
+</style>
+</head>
+<body>
+<h1>Schedule</h1>
+<table>
+  <tr>
+    <th><b>id</b></th>
+    <th><b>name</b></th>
+    <th><b>bonus multiplier</b></th>
+    <th><b>total reward %</b></th>
+  </tr>
+  {% for row in data %}
+    <tr>
+      <td>{{ row.id|floatformat:3 }}</td>
+      <td>{{ row.name|capfirst }}</td>
+      <td>{{ row.bonus_mx_perc|floatformat:2 }}%</td>
+      <td>{{ row.bonus_total_perc|floatformat:4 }}%</td>
+    </tr>
+  {% endfor %}
+</table>
+</body>
+</html>
